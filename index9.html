@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-blue-100 min-h-screen flex items-center justify-center p-4">
+
+    <div class="bg-white w-full max-w-md p-6 rounded-2xl shadow-lg">
+
+        <h1 class="text-3xl font-bold text-blue-600 text-center mb-6">
+            My To-Do List
+        </h1>
+
+        <div class="flex gap-2 mb-5">
+            <input
+                type="text"
+                id="taskInput"
+                placeholder="Enter your task"
+                class="flex-1 min-w-0 border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+
+            <button
+                onclick="addTask()"
+                class="bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700">
+                Add
+            </button>
+        </div>
+
+        <ul id="taskList" class="space-y-3"></ul>
+
+        <p id="message" class="text-center text-sm text-gray-500 mt-4"></p>
+
+    </div>
+
+    <script>
+        function addTask() {
+            const input = document.getElementById("taskInput");
+            const taskText = input.value.trim();
+            const message = document.getElementById("message");
+
+            if (taskText === "") {
+                message.textContent = "Please enter a task!";
+                message.className = "text-center text-sm text-red-500 mt-4";
+                return;
+            }
+
+            const li = document.createElement("li");
+
+            li.className =
+                "flex items-center justify-between gap-3 bg-gray-100 p-3 rounded-lg";
+
+            const span = document.createElement("span");
+            span.textContent = taskText;
+            span.className = "flex-1 break-words cursor-pointer";
+
+            // Mark task as completed
+            span.onclick = function () {
+                span.classList.toggle("line-through");
+                span.classList.toggle("text-gray-400");
+            };
+
+            // Delete button
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "Delete";
+            deleteBtn.className =
+                "bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600";
+
+            deleteBtn.onclick = function () {
+                li.remove();
+            };
+
+            li.appendChild(span);
+            li.appendChild(deleteBtn);
+
+            document.getElementById("taskList").appendChild(li);
+
+            input.value = "";
+            message.textContent = "Task added successfully!";
+            message.className = "text-center text-sm text-green-600 mt-4";
+        }
+
+        // Add task by pressing Enter
+        document.getElementById("taskInput").addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                addTask();
+            }
+        });
+    </script>
+
+</body>
+</html>
